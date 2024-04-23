@@ -28,21 +28,19 @@ csv_amd <- read_csv(fn_amd)
 head(csv_amd)
 colnames(csv_amd) <- c("data", "open", "high", "low", " close", "volume")
 amd1 <- csv_amd[,c(1,5)]
-#INTELL
+#INTEL
 # fn_in <- "https://stooq.pl/q/d/l/?s=intc.us&d1=20090405&d2=20240405&i=d"
 fn_in <- "https://drive.google.com/uc?id=1TdBcCrSIOnzPkYKAWGOFg3O0GRXZ1TJu&export=download"
 csv_in <- read_csv(fn_in)
 colnames(csv_in)<- c("data", "open", "high", "low", " close", "volume")
 int1 <- csv_in[,c(1,5)]
-#Ocena kompletności danychi INTELL 
+#Ocena kompletności danych 
 #NVIDIA
 print(which(is.na(nvidia1)))
 #AMD
 print(which(is.na(amd1)))
-#INTELL 
+#INTEL
 print(which(is.na(int1)))
-#DLA AMD I NVIDIA: dane są kompletne -0 oznacza, zakończne sprawdzanie ale nic nie zostało wypisane ,
-#więc wszystkie są nie NA
 
 #Szeregi czasowe stóp zwrotu
 N <- 1250
@@ -72,7 +70,7 @@ sd(sl_i)
 min(sl_i)
 max(sl_i)
 #INTEL 
-#Przedstaw uzyskane szeregi czasowe w postaci wykresu/wykresów.
+#Wykresy szeregow czasowych
 #NVIDIA 
 wykres1 <- ggplot(sl_n, aes(Index)) + 
   theme_bw() + labs(x= "DATA", y= "logarytmiczne")+
@@ -82,7 +80,7 @@ wykres2 <- ggplot(sl_a, aes(Index)) +
   theme_bw() + labs(x= "DATA", y= "logarytmiczne")+
   geom_line(aes(y=sl_a),color = "blue")
 wykres1 + wykres2 
-#INTELL
+#INTEL
 wykres3 <- ggplot(sl_i, aes(Index)) + 
   theme_bw() + labs(x= "DATA", y= "logarytmiczne")+
   geom_line(aes(y=sl_i),color = "red")
@@ -94,7 +92,7 @@ cor(sl_a, sl_n)
 cor(sl_a,sl_i)
 #INTEL i NVIDIA 
 cor(sl_i,sl_n)
-#Wyznacz skośność i kurtozę dla stóp zwrotu z każdego z instrumentów. 
+#Wynaczenie skosnosci i kurtozy
 #NVIDIA 
 N<- coredata(sl_n)
 M1_N <- moment(N, order = 1, central = FALSE, na.rm = TRUE)
@@ -111,7 +109,7 @@ M2_A <- moment(A, order = 2, central = FALSE, na.rm = TRUE)
 skewness(sl_a)
 #kurtoza 
 kurtosis(sl_a)
-#INTELL
+#INTEL
 I<- coredata(sl_i)
 M1_I <- moment(I, order = 1, central = FALSE, na.rm = TRUE)
 M2_I <- moment(I, order = 2, central = FALSE, na.rm = TRUE)
@@ -125,7 +123,7 @@ kurtosis(sl_i)
 NVIDIA <- (N - M1_N) / sqrt(M2_N)
 bwdth <- 0.1
 AMD <- (A - M1_A) / sqrt(M2_A)
-INTELL <- (I - M1_I) / sqrt(M2_I)
+INTEL <- (I - M1_I) / sqrt(M2_I)
 # Porównanie z rokładem normalnym
 hist_1<-ggplot(data.frame(NVIDIA), aes(x = NVIDIA)) +
   theme_bw() +
@@ -135,7 +133,7 @@ hist_2<-ggplot(data.frame(AMD), aes(x = AMD)) +
   theme_bw() +
   geom_histogram(binwidth = bwdth, color = "white", fill = "darkgreen", linewidth = 0.1) +
   stat_function(fun = function(x) dnorm(x) * 1250 * bwdth, color = "red", linewidth = 1.5)
-hist_3<-ggplot(data.frame(INTELL), aes(x = INTELL)) +
+hist_3<-ggplot(data.frame(INTEL), aes(x = INTELL)) +
   theme_bw() +
   geom_histogram(binwidth = bwdth, color = "white", fill = "darkgreen", linewidth = 0.1) +
   stat_function(fun = function(x) dnorm(x) * 1250 * bwdth, color = "red", linewidth = 1.5)
